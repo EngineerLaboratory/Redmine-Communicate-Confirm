@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  redmine:
+    build:
+      context: .
+      dockerfile: Dockerfile.dockerfile
+    container_name: redmine
+    ports:
+      - 3000:3000
+    environment:
+      REDMINE_DB_MYSQL: redmine-db
+      REDMINE_DB_PASSWORD: redmine
+    depends_on:
+      - redmine-db
+    restart: always
+    
+  redmine-db:
+    image: mariadb
+    container_name: redmine-db
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: redmine
+      MYSQL_DATABASE: redmine
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    restart: always
